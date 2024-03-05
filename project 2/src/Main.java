@@ -7,7 +7,7 @@ public class Main {
     private static ArrayList<Transaction> transactionHistory = new ArrayList<>();
 
     public static void main(String[] args) {
-
+        int balance=0;
         int bank_balance= 10000;
         Scanner sc=new Scanner(System.in);
         JOptionPane.showConfirmDialog(null, "WELCOME TO YOU'RE ATM , READY  TO ACCESS YOU'RE ACCOUNT ?");
@@ -16,24 +16,30 @@ public class Main {
         String password=JOptionPane.showInputDialog("whats your password");
         if(Authenticate_login(name,password)){
             System.out.println("Welcome to you're account what would you like to do");
-            display_choices();
-            System.out.println("Whats you're choice ?");
-            int choice= sc.nextInt();
-            while(true) {
+            while(true){
+                display_choices();
+                System.out.println("Whats you're choice ?");
+                int choice= sc.nextInt();
+
                 if (choice == 1) {
                     System.out.println("What is the amount you want to deposit:");
                     int amount = sc.nextInt();
-                    get_deposit(bank_balance, amount);
+                    balance=get_deposit(bank_balance, amount);
+                    bank_balance=balance;
                 } else if (choice == 2) {
                     System.out.println("What is the amount you want to withdraw:");
                     int amount1 = sc.nextInt();
-                    get_withdraw(bank_balance, amount1);
+                    balance=get_withdraw(bank_balance, amount1);
+                    bank_balance=balance;
+
                 } else if (choice == 3) {
                     System.out.println("Enter account to transfer money:");
                     String acc_name = sc.next();
                     System.out.println("Enter amount you want to transfer:");
                     int amount2 = sc.nextInt();
-                    get_transfer(bank_balance, amount2, acc_name);
+                    balance=get_transfer(bank_balance, amount2, acc_name);
+                    bank_balance=balance;
+
                 } else if (choice == 4) {
                     get_history();
                 } else {
@@ -53,39 +59,35 @@ public class Main {
         }
         return false;
     }
-public static void  display_choices() {
-    System.out.println("1. Deposit" + '\n' + "2.Withdraw" + '\n' + "3.Transfer" + '\n' + "4.Transaction History" + '\n' + "5.Exit");
-}
-public static void  get_deposit(int bank_balance,int amount) {
+    public static void  display_choices() {
+        System.out.println("1. Deposit" + '\n' + "2.Withdraw" + '\n' + "3.Transfer" + '\n' + "4.Transaction History" + '\n' + "5.Exit");
+    }
+    public static int  get_deposit(int bank_balance,int amount) {
         System.out.println("Amount successfully deposited");
         System.out.println("Total Balance"+ (bank_balance+amount));
-}
+        return bank_balance+amount;
+    }
 
-public static void  get_withdraw(int bank_balance,int amount1) {
-    if(amount1>bank_balance){
-        System.out.println("Insufficient Funds");
-    }
-    else {
-        System.out.println("Amount withdrawn"+'\n'+"Total Balance"+(bank_balance-amount1));
-    }
-}
-    public static void  get_transfer(int bank_balance,int amount1) {
+    public static int  get_withdraw(int bank_balance,int amount1) {
         if(amount1>bank_balance){
             System.out.println("Insufficient Funds");
         }
         else {
             System.out.println("Amount withdrawn"+'\n'+"Total Balance"+(bank_balance-amount1));
         }
+        return bank_balance-amount1;
     }
 
 
-    public static void get_transfer(int bank_balance, int amount2, String acc_name) {
+
+    public static int get_transfer(int bank_balance, int amount2, String acc_name) {
         if (amount2 >= 5000) {
             System.out.println("5000 is the limit to transfer");
         } else {
             transactionHistory.add(new Transaction("Transfer to " + acc_name, amount2));
             System.out.println("Amount Transferred to " + acc_name + "\nTotal Balance: " + (bank_balance - amount2));
         }
+        return bank_balance-amount2;
     }
 
     public static void get_history() {
@@ -115,6 +117,11 @@ public static void  get_withdraw(int bank_balance,int amount1) {
         }
     }
 }
+
+
+
+
+             
 
 
 
